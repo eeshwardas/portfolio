@@ -1,2 +1,2 @@
 # portfolio
-Please view at your leisure
+Please view at your liesure
