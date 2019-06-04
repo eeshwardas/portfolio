@@ -1,3 +1,6 @@
+#[LinkedIn](https://www.linkedin.com/in/erik-ward-eeshwar-das)
+See my LinkedIn profile
+
 # Software Portfolio
 Created using purely **HTML**, **CSS** and **Bootstrap** using original artwork. Copyrighted material.
 
