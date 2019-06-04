@@ -1,4 +1,4 @@
-# [LinkedIn](https://www.linkedin.com/in/erik-ward-eeshwar-das)
+# [See me on LinkedIn](https://www.linkedin.com/in/erik-ward-eeshwar-das)
 See my LinkedIn profile
 
 # Software Portfolio
