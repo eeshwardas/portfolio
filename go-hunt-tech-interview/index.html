@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<link href="flyer-layer.css" rel="stylesheet" type="text/css">
+		<link href="assets.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			.v-spacer {
+			  height: 100px;
+			}
+			.h-spacer {
+				align-self: center;
+			}
+			.ui-autocomplete-loading {
+				background: white url("loading.gif") right center no-repeat;
+			}
+		</style>
+		<title>goHUNT Technical Interview</title>
+	</head>
+	<body class="m-0 p-0 gr-sw-font-antic-slab">
+		<div class="m-0 p-0 container-fluid">
+			<div class="m-0 p-0">
+				<div class="m-0 p-0 gr-sw-layer-flyer-min-width">
+					<div class="m-0 p-0 h-75">
+						<header class="m-0 p-0 gr-sw-layer-flyer-header-thinline">
+							<h1 class="m-0 p-0 gr-sw-layer-flyer-header-thinline">
+								goHUNT Technical Interview
+							</h1>
+						</header>
+						<main class="m-0 p-0">
+							<article class="m-0 p-0">
+								<div class="m-0 p-0 vw-100">
+									<div class="m-0 p-0 v-spacer">
+									</div>
+									<div class="m-0 p-0 w-25 d-inline-block">
+									</div>
+									<div class="m-0 p-0 w-50 d-inline-block h-spacer">
+										<div class="m-0 p-0" oninput="characterEnteredEventHandler();" class="input-group mb-3">
+											<input id="charactersEntered" type="text" class="form-control" placeholder="Enter characters" aria-label="Enter characters" aria-describedby="Submit">
+										</div>
+										<div class="m-0 p-0">
+											<select id="completedWord" class="m-0 custom-select" style="display: none;" onchange="autocompleteSelected();">
+											</select>
+										</div>
+									</div>
+								</div>
+							</article>
+						</main>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="debug">
+		
+		</div>
+		<script type="text/javascript">
+			// debug
+			debug = document.getElementById("debug");
+			isDebugging = true;
+			function debugOut(text)
+			{
+				if (isDebugging)
+				{
+					debug.innerHTML = debug.innerHTML + "<br />" + text;
+				}
+			}
+			
+			// Processing
+			function sendToUI(autocompleteList) {
+				fillAutocompleteList(autocompleteList);
+			}
+			function validateResults(autocompleteList) {
+				communicationsReliabilityThreshold = 0.60;
+				let communicationReliabilityThresholdSuccessDensity = 0;
+				let communicationReliabilityThresholdSuccessCumulativeDensity = 0;
+				let communicationsReliabilityProbablity = 1.00;
+				let isValid = true;
+				
+				charactersEntered = getCharactersEntered();
+				console.log("charactersEntered = " + charactersEntered);
+				for (let i=0; i<autocompleteList.length; i++)
+				{
+					console.log("autocompleteList[i].toLocaleLowerCase('en-US') = " + autocompleteList[i].toLocaleLowerCase('en-US'));
+					console.log("charactersEntered.toLocaleLowerCase('en-US') = " + charactersEntered.toLocaleLowerCase('en-US'));
+					if (charactersEntered.length < 3)
+					{
+						if (autocompleteList[i].toLocaleLowerCase('en-US').startsWith(
+							charactersEntered.toLocaleLowerCase('en-US')))
+						{
+							communicationReliabilityThresholdSuccessDensity = 1.00;
+							console.log("conditional check level 1 finds valid");
+						}
+						else
+						{
+							communicationReliabilityThresholdSuccessCumulativeDensity = 0.00;
+						}
+					}
+					else
+					{
+						let communicationItemReliabilitySuccessCount = 0;
+						for (let j=0; ( (j<charactersEntered.length) &&
+							(charactersEntered.length <= autocompleteList[i].length) ); j++)
+						{
+							if (charactersEntered[j].toLocaleLowerCase('en-US') ==
+								autocompleteList[i][j].toLocaleLowerCase('en-US'))
+							{
+								communicationItemReliabilitySuccessCount++;
+							}
+						}
+						communicationReliabilityThresholdSuccessDensity =
+							( communicationItemReliabilitySuccessCount / charactersEntered.length );
+						console.log("communicationReliabilityThresholdSuccessDensity = " +
+							communicationReliabilityThresholdSuccessDensity);
+					}
+					console.log("communicationReliabilityThresholdSuccessDensity = " + communicationReliabilityThresholdSuccessDensity);
+					console.log("communicationReliabilityThresholdSuccessCumulativeDensity = " + communicationReliabilityThresholdSuccessCumulativeDensity);
+					communicationReliabilityThresholdSuccessCumulativeDensity += communicationReliabilityThresholdSuccessDensity;
+				}
+				communicationsReliabilityProbablity = communicationReliabilityThresholdSuccessCumulativeDensity / autocompleteList.length;
+				if (communicationsReliabilityProbablity < communicationsReliabilityThreshold)
+				{
+					isValid = false;					
+					console.log("conditional check level 2 finds invalid");
+				}
+				console.log("communicationsReliabilityProbablity = " + communicationsReliabilityProbablity);
+				console.log("isValid = " + isValid);
+				return isValid;
+			}
+			function processResults(data, textStatus, jqXHR) {
+				const autocompleteListObject = Object.values(data);
+				const autocompleteList = autocompleteListObject[0];
+				console.log("validateResults(autocompleteList = " +
+					validateResults(autocompleteList));
+				if (validateResults(autocompleteList))
+				{
+					sendToUI(autocompleteList);
+				}
+			}
+		
+			// Ajax
+			isNetworking = true;
+			function genereateApiRequest(charactersToAutocomplete)
+			{
+				return "https://mock-autocomplete.herokuapp.com/autocomplete?q="
+					+ charactersToAutocomplete;
+			}
+			function getSuggestedResultsFromAPI(charactersToAutocomplete)
+			{
+				if (isNetworking) {
+					const apiRequest = genereateApiRequest(charactersToAutocomplete);
+					$.get( apiRequest, null, processResults, "json" );
+				}
+				else {
+					
+					data = {"data":["Alabama","Alaska","Åland Islands"]};
+					//data = {"data":["Afghanistan","Alabama","Alaska","Albania","Albany"]};
+					processResults(data, null, null);
+				}
+			}
+			
+			// UI
+			function autocompleteSelected() {
+				completedWord = document.getElementById("completedWord");
+				const textElement = document.getElementById("charactersEntered");
+				textElement.value = completedWord.value;
+				completedWord.style = "display: none;";
+			}
+			function fillAutocompleteList(autocompleteList) {
+				completedWord = document.getElementById("completedWord");
+				completedWord.innerHTML = "";
+				if (autocompleteList.length < 2)
+				{
+					autocompleteList.push("");
+					completedWord.style = "display: none;";
+				}
+				console.log("autocompleteList.length = " + autocompleteList.length);
+				if (autocompleteList.length > 1)
+				{
+					completedWord.size = autocompleteList.length;
+					for (let i=0; i<autocompleteList.length; i++)
+					{
+						console.log(i + " " + autocompleteList[i]);
+						completedWord.innerHTML += 
+							"<option id='completedWordItem-" + i + "' " +
+								"class='m-0 p-0' " + 
+								"value='" + autocompleteList[i] + "'>" +
+									autocompleteList[i] +
+							"</option>";
+					}
+					console.log("autocompleteList.length = " + autocompleteList.length);
+					completedWord.style = "&nbsp;";
+				}
+				debugOut(completedWord.innerHTML);
+			}
+			function getCharactersEntered()
+			{
+				const textElement = document.getElementById("charactersEntered");
+				const charactersEntered = textElement.value;
+				return charactersEntered;
+			}
+			function autocomplete()
+			{
+				charactersEntered = getCharactersEntered();
+				getSuggestedResultsFromAPI(charactersEntered);
+			}
+			function characterEnteredEventHandler() {
+				autocomplete();
+			}
+		</script>
+
+	</body>
+</html>
+	
