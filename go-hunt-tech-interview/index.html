@@ -131,7 +131,7 @@
 		
 			// Ajax
 			const isNetworking = true;
-			let isStressReduced = false;
+			let isStressReduced = true;
 			let isReducingStress = false;
 			function completeStressReduction()
 			{
@@ -151,7 +151,7 @@
 					if (!isReducingStress)
 					{
 						isReducingStress = true;
-						setTimeout(completeStressReduction, 3000);
+						setTimeout(completeStressReduction, 1000);
 					}
 				}
 			}
