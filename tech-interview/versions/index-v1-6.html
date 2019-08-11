@@ -72,408 +72,371 @@
 		
 		</div>
 		<script type="text/javascript">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			"use strict";
+
 			// debug
-			
-			debug = document.getElementById("debug");
-			const isDebugging = false;
-			
-			function debugOut(text)
+			class TechInterviewDebug
 			{
-				if (isDebugging)
+				getDebuggingCapabilitiesCanDebug()
 				{
-					debug.innerHTML = text + "<br />" + debug.innerHTML;
+					return false;
 				}
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			// Processing
-			
-			function processResults(data, textStatus, jqXHR) {
-				textStatus = null;
-				jqXHR = null;
 				
-				const autoCompleteList = unpackJQueryJson(data);
+				//const debug = document.getElementById("debug");
+				//const isDebugging = false;
 				
-				if (validateResults(autoCompleteList))
+				debugOut(text)
 				{
-					sendToUI(autoCompleteList);
+					if (isDebugging)
+					{
+						$("#debug").innerHTML = text + "<br />" + $("#debug").innerHTML;
+					}
 				}
-			}
-			
-			function unpackJQueryJson(data)
-			{
-				return Object.values(data)[0];
 			}
 		
-			function sendToUI(autoCompleteList) {
-				fillAutoCompleteList(autoCompleteList);
-			}
-			
-			function validateResults(autoCompleteList)
+			// Processing
+			class TechInterviewProcessing
 			{
-				communicationsReliabilityThreshold = 0.60;
-				let communicationReliabilityThresholdSuccessDensity = 0;
-				let communicationReliabilityThresholdSuccessCumulativeDensity = 0;
-				let communicationsReliabilityProbablity = 1.00;
-				let isValid = true;
-				
-				charactersEntered = getCharactersEntered();
-				for (let i=0; i<autoCompleteList.length; i++)
-				{
-					if (charactersEntered.length < 3)
+				processResults(data, textStatus, jqXHR) {
+					textStatus = null;
+					jqXHR = null;
+					
+					const autoCompleteList = this.unpackJQueryJson(data);
+					
+					if (this.validateResults(autoCompleteList))
 					{
-						if (autoCompleteList[i].toLocaleLowerCase('en-US').startsWith(
-							charactersEntered.toLocaleLowerCase('en-US')))
+						this.sendToUI(autoCompleteList);
+					}
+				}
+				
+				unpackJQueryJson(data)
+				{
+					return Object.values(data)[0];
+				}
+			
+				sendToUI(autoCompleteList) {
+					techInterviewUI.fillAutoCompleteList(autoCompleteList);
+				}
+				
+				validateResults(autoCompleteList)
+				{
+					const communicationsReliabilityThreshold = 0.60;
+					let communicationReliabilityThresholdSuccessDensity = 0;
+					let communicationReliabilityThresholdSuccessCumulativeDensity = 0;
+					let communicationsReliabilityProbablity = 1.00;
+					let isValid = true;
+					
+					const charactersEntered = techInterviewUI.getCharactersEntered();
+					for (let i=0; i<autoCompleteList.length; i++)
+					{
+						if (charactersEntered.length < 3)
 						{
-							communicationReliabilityThresholdSuccessDensity = 1.00;
+							if (autoCompleteList[i].toLocaleLowerCase('en-US').startsWith(
+								charactersEntered.toLocaleLowerCase('en-US')))
+							{
+								communicationReliabilityThresholdSuccessDensity = 1.00;
+							}
+							else
+							{
+								communicationReliabilityThresholdSuccessCumulativeDensity = 0.00;
+							}
 						}
 						else
 						{
-							communicationReliabilityThresholdSuccessCumulativeDensity = 0.00;
-						}
-					}
-					else
-					{
-						let communicationItemReliabilitySuccessCount = 0;
-						for (let j=0; ( (j<charactersEntered.length) &&
-							(charactersEntered.length <= autoCompleteList[i].length) ); j++)
-						{
-							if (charactersEntered[j].toLocaleLowerCase('en-US') ==
-								autoCompleteList[i][j].toLocaleLowerCase('en-US'))
+							let communicationItemReliabilitySuccessCount = 0;
+							for (let j=0; ( (j<charactersEntered.length) &&
+								(charactersEntered.length <= autoCompleteList[i].length) ); j++)
 							{
-								communicationItemReliabilitySuccessCount++;
+								if (charactersEntered[j].toLocaleLowerCase('en-US') ==
+									autoCompleteList[i][j].toLocaleLowerCase('en-US'))
+								{
+									communicationItemReliabilitySuccessCount++;
+								}
+							}
+							communicationReliabilityThresholdSuccessDensity =
+								( communicationItemReliabilitySuccessCount / charactersEntered.length );
+						}
+						communicationReliabilityThresholdSuccessCumulativeDensity += communicationReliabilityThresholdSuccessDensity;
+					}
+					communicationsReliabilityProbablity = communicationReliabilityThresholdSuccessCumulativeDensity / autoCompleteList.length;
+					if (communicationsReliabilityProbablity < communicationsReliabilityThreshold)
+					{
+						isValid = false;					
+					}
+					return isValid;
+				}
+			}
+				
+			// Ajax
+			class TechInterviewAjax
+			{
+				constructor()
+				{
+					this.isStressReduced = true;
+					this.isReducingStress = false;
+				}
+			
+				getNetworkingAvailabilityCapabilitiesCanNetwork()
+				{
+					return true;
+				}
+			
+				//const getNetworkingAvailabilityCapabilities = false;
+				
+				//let isStressReduced = true;
+				//let isReducingStress = false;
+				
+				networkRequest()
+				{
+					let isNetworkRequestAvailable = false;
+					if (this.isStressReduced)
+					{
+						isNetworkRequestAvailable = true;
+						this.setNetworkRequestPermitted();
+					}
+					return isNetworkRequestAvailable;
+				}
+				
+				setNetworkRequestPermitted()
+				{
+					this.isStressReduced = false;
+					this.setNetworkToReduceStress();
+				}
+				
+				setNetworkToReduceStress()
+				{
+					this.isReducingStress = true;
+					setTimeout( () => this.setNetworkDeStressed(), 1000);			
+				}
+				
+				setNetworkDeStressed()
+				{
+					this.isStressReduced = true;
+					this.isReducingStress = false;
+					techInterviewUI.setUiNetworkRequestAvailable();
+				}
+
+				getSuggestedResultsFromAPI(charactersToAutocomplete)
+				{
+					if (this.getNetworkingAvailabilityCapabilitiesCanNetwork()) {
+						const apiRequest = this.genereateApiRequest(charactersToAutocomplete);
+						$.get( apiRequest, null, (data, textStatus, jqXHR ) =>
+							techInterviewProcessing.processResults(data, textStatus, jqXHR), "json" );
+					}
+					else {
+						techInterviewProcessing.processResults(this.getLocalDataSet(), null, null);
+					}
+				}
+				
+				genereateApiRequest(charactersToAutocomplete)
+				{
+					return "https://mock-autocomplete.herokuapp.com/autocomplete?q="
+						+ charactersToAutocomplete;
+				}
+				
+				getLocalDataSet()
+				{	
+					const data = {"data":["Alabama","Alaska","Åland Islands"]};
+					//data = {"data":["Afghanistan","Alabama","Alaska","Albania","Albany"]};
+					return data;
+				}
+			}
+				
+			// UI
+			class TechInterviewUI
+			{
+				constructor()
+				{
+					this.isAutoCompleteNeeded = false;
+					//this.arrowDownKey = 
+					//this.arrowUpKey = 
+				}
+				
+				getArrowDownKey()
+				{
+					return 40;
+				}
+				getArrowUpKey()
+				{
+					return 38;
+				}
+			
+				//let isAutoCompleteNeeded = false;
+				//const arrowDownKey = 40;
+				//const arrowUpKey = 38;
+				
+				initUIEvents()
+				{
+					$("#charactersEntered").keydown((event) => this.charactersEnteredKeyDownEvent(event));
+					$("#charactersEntered").keyup((event) => this.charactersEnteredKeyUpEvent(event));
+					$("#completedWord").focusout((event) => this.completedWordFocusOut(event));
+				}
+				
+				initUI()
+				{
+					this.initUIEvents();
+				}
+				
+				ititUIElements()
+				{
+					$("#completedWord").hide();
+				}
+				
+				completedWordFocusOut(event)
+				{
+					this.completedWordItemsReset();
+				}
+				
+				completedWordItemClicked(event)
+				{
+					const selectedItem = event.data;
+					$("#charactersEntered").val(selectedItem);
+					$("#completedWord").hide();
+				}
+				
+				completedWordChangeEvent()
+				{
+					$("#charactersEntered").val($("#completedWord").val());
+				}
+				
+				completedWordItemsReset()
+				{
+					$("#completedWord > button").removeClass("active");
+				}
+				
+				completedWordItemSetActive(tagIdNext, tagIdPrev)
+				{
+					$(tagIdNext).trigger("focus");
+					$(tagIdNext).addClass("active");
+					
+					$(tagIdPrev).removeClass("active");
+				}
+				
+				completedWordKeyDownEvent(event)
+				{
+					if ((event.which === this.getArrowDownKey()) || 
+						(event.which === this.getArrowUpKey()))
+					{
+						let modifier = null;
+						let isRoomLeft = true;
+						const tagButtons = "#completedWord > button";
+						if (event.which === this.getArrowDownKey())
+						{
+							modifier = 1;
+							isRoomLeft = (event.data < $(tagButtons).length - 1);
+						}
+						else if (event.which === this.getArrowUpKey())
+						{
+							modifier = -1;
+							isRoomLeft = (event.data > 0);
+							if (!isRoomLeft)
+							{
+								$("#charactersEntered").trigger("focus");
 							}
 						}
-						communicationReliabilityThresholdSuccessDensity =
-							( communicationItemReliabilitySuccessCount / charactersEntered.length );
-					}
-					communicationReliabilityThresholdSuccessCumulativeDensity += communicationReliabilityThresholdSuccessDensity;
-				}
-				communicationsReliabilityProbablity = communicationReliabilityThresholdSuccessCumulativeDensity / autoCompleteList.length;
-				if (communicationsReliabilityProbablity < communicationsReliabilityThreshold)
-				{
-					isValid = false;					
-				}
-				return isValid;
-			}
-			
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-			// Ajax
-			
-			const isNetworkingCapabilityAvailable = true;
-			
-			let isStressReduced = true;
-			let isReducingStress = false;
-			
-			function networkRequest()
-			{
-				let isNetworkRequestAvailable = false;
-				if (isStressReduced)
-				{
-					isNetworkRequestAvailable = true;
-					setNetworkRequestPermitted();
-				}
-				return isNetworkRequestAvailable;
-			}
-			
-			function setNetworkRequestPermitted()
-			{
-				isStressReduced = false;
-				setNetworkToReduceStress();
-			}
-			
-			function setNetworkToReduceStress()
-			{
-				isReducingStress = true;
-				setTimeout(setNetworkDeStressed, 1000);			
-			}
-			
-			function setNetworkDeStressed()
-			{
-				isStressReduced = true;
-				isReducingStress = false;
-				setUiNetworkRequestAvailable();
-			}
 
-			function getSuggestedResultsFromAPI(charactersToAutocomplete)
-			{
-				if (isNetworkingCapabilityAvailable) {
-					const apiRequest = genereateApiRequest(charactersToAutocomplete);
-					$.get( apiRequest, null, processResults, "json" );
-				}
-				else {
-					processResults(getLocalDataSet(), null, null);
-				}
-			}
-			
-			function genereateApiRequest(charactersToAutocomplete)
-			{
-				return "https://mock-autocomplete.herokuapp.com/autocomplete?q="
-					+ charactersToAutocomplete;
-			}
-			
-			function getLocalDataSet()
-			{	
-				data = {"data":["Alabama","Alaska","Åland Islands"]};
-				//data = {"data":["Afghanistan","Alabama","Alaska","Albania","Albany"]};
-				return data;
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			// UI
-			
-			$(document).ready(initUI);
-			let isAutoCompleteNeeded = false;
-			const arrowDownKey = 40;
-			const arrowUpKey = 38;
-			
-			function initUI()
-			{
-				initUIEvents();
-			}
-			
-			function ititUIElements()
-			{
-				$("#completedWord").hide();
-			}
-			
-			function initUIEvents()
-			{
-				$("#charactersEntered").keydown(charactersEnteredKeyDownEvent);
-				$("#charactersEntered").keyup(charactersEnteredKeyUpEvent);
-				$("#completedWord").focusout(completedWordFocusOut);
-			}
-			
-			function completedWordFocusOut(event)
-			{
-				completedWordItemsReset();
-			}
-			
-			function completedWordItemClicked(event)
-			{
-				const selectedItem = event.data;
-				$("#charactersEntered").val(selectedItem);
-				$("#completedWord").hide();
-			}
-			
-			function completedWordChangeEvent()
-			{
-				$("#charactersEntered").val($("#completedWord").val());
-			}
-			
-			function completedWordItemsReset()
-			{
-				$("#completedWord > button").removeClass("active");
-			}
-			
-			function completedWordItemSetActive(tagIdNext, tagIdPrev)
-			{
-				$(tagIdNext).trigger("focus");
-				$(tagIdNext).addClass("active");
-				
-				$(tagIdPrev).removeClass("active");
-			}
-			
-			function completedWordKeyDownEvent(event)
-			{
-				if ((event.which === arrowDownKey) || 
-					(event.which === arrowUpKey))
-				{
-					let modifier = null;
-					let isRoomLeft = true;
-					const tagButtons = "#completedWord > button";
-					if (event.which === arrowDownKey)
-					{
-						modifier = 1;
-						isRoomLeft = (event.data < $(tagButtons).length - 1);
-					}
-					else if (event.which === arrowUpKey)
-					{
-						modifier = -1;
-						isRoomLeft = (event.data > 0);
-						if (!isRoomLeft)
+						const tagIdPrev = "#completedWordItem-" + event.data;
+						const tagIdNext = "#completedWordItem-" + (event.data + modifier);
+						if (isRoomLeft)
 						{
-							$("#charactersEntered").trigger("focus");
+							this.completedWordItemSetActive(tagIdNext, tagIdPrev);
 						}
 					}
-
-					const tagIdPrev = "#completedWordItem-" + event.data;
-					const tagIdNext = "#completedWordItem-" + (event.data + modifier);
-					if (isRoomLeft)
+				}
+				
+				charactersEnteredKeyDownEvent(event)
+				{
+					if (event.which === this.getArrowDownKey())
 					{
-						completedWordItemSetActive(tagIdNext, tagIdPrev);
+						this.completedWordItemSetActive("#completedWordItem-0");
 					}
 				}
-			}
-			
-			function charactersEnteredKeyDownEvent(event)
-			{
-				if (event.which === arrowDownKey)
-				{
-					completedWordItemSetActive("#completedWordItem-0");
-				}
-			}
-			
-			function charactersEnteredChangeEvent(event)
-			{
-				processCharactersEntered();
-			}
-			
-			function charactersEnteredKeyUpEvent()
-			{
-				processCharactersEntered();
-			}
-			
-			function processCharactersEntered()
-			{
-				setAutoCompleteNeeded(true);
-				isNetworkRequestAvailable = networkRequest();
-				if (isNetworkRequestAvailable)
-				{
-					setUiNetworkRequestAvailable();
-				}
-			}
-			
-			function setAutoCompleteNeeded(isNeeded)
-			{
-				isAutoCompleteNeeded = isNeeded;
-			}
-			
-			function setUiNetworkRequestAvailable()
-			{
-				if (isAutoCompleteNeeded)
-				{
-					autoComplete();
-					setAutoCompleteNeeded(false);
-				}
-			}
-			
-			function autoComplete()
-			{
-				charactersEntered = getCharactersEntered();
-				getSuggestedResultsFromAPI(charactersEntered);
-			}
-			
-			function fillAutoCompleteList(autoCompleteList)
-			{
-				$("#completedWord").empty();
 				
-				if (autoCompleteList.length < 2)
+				charactersEnteredChangeEvent(event)
 				{
-					autoCompleteList.push("");
-					$("#completedWord").hide();
-					
+					this.processCharactersEntered();
 				}
-				if (autoCompleteList.length > 1)
+				
+				charactersEnteredKeyUpEvent()
 				{
-					
-					for (let i=0; i<autoCompleteList.length; i++)
+					this.processCharactersEntered();
+				}
+				
+				processCharactersEntered()
+				{
+					this.setAutoCompleteNeeded(true);
+					const isNetworkRequestAvailable = techInterviewAjax.networkRequest();
+					if (isNetworkRequestAvailable)
 					{
-						const tagID = "completedWordItem-" + i;
+						this.setUiNetworkRequestAvailable();
+					}
+				}
+				
+				setAutoCompleteNeeded(isNeeded)
+				{
+					this.isAutoCompleteNeeded = isNeeded;
+				}
+				
+				setUiNetworkRequestAvailable()
+				{
+					if (this.isAutoCompleteNeeded)
+					{
+						this.autoComplete();
+						this.setAutoCompleteNeeded(false);
+					}
+				}
+				
+				autoComplete()
+				{
+					const charactersEntered = this.getCharactersEntered();
+					techInterviewAjax.getSuggestedResultsFromAPI(charactersEntered);
+				}
+				
+				fillAutoCompleteList(autoCompleteList)
+				{
+					$("#completedWord").empty();
+					
+					if (autoCompleteList.length < 2)
+					{
+						autoCompleteList.push("");
+						$("#completedWord").hide();
+						
+					}
+					if (autoCompleteList.length > 1)
+					{
+						
+						for (let i=0; i<autoCompleteList.length; i++)
+						{
+							const tagID = "completedWordItem-" + i;
+													
+							$("#completedWord").append(
+								'<button id="' + tagID + '">' +
+								'</button>');
+							$("#" + tagID).attr("type", "button");
+							$("#" + tagID).addClass("m-0 p-0");
+							$("#" + tagID).addClass("list-group-item list-group-item-action");
 												
-						$("#completedWord").append(
-							'<button id="' + tagID + '">' +
-							'</button>');
-						$("#" + tagID).attr("type", "button");
-						$("#" + tagID).addClass("m-0 p-0");
-						$("#" + tagID).addClass("list-group-item list-group-item-action");
-											
-						$("#" + tagID).val(autoCompleteList[i]);
-						$("#" + tagID).html(autoCompleteList[i]);
+							$("#" + tagID).val(autoCompleteList[i]);
+							$("#" + tagID).html(autoCompleteList[i]);
 
-						$("#" + tagID).click(autoCompleteList[i], completedWordItemClicked);
-						$("#" + tagID).keydown(i, completedWordKeyDownEvent);
-											}
-					$("#completedWord").show();
+							$("#" + tagID).click(autoCompleteList[i], this.completedWordItemClicked);
+							$("#" + tagID).keydown(i, (event) => {this.completedWordKeyDownEvent(event);});
+												}
+						$("#completedWord").show();
+					}
+				}
+				
+				getCharactersEntered()
+				{
+					return $("#charactersEntered").val();
 				}
 			}
 			
-			function getCharactersEntered()
-			{
-				return $("#charactersEntered").val();
-			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			const techInterviewDebug = new TechInterviewDebug();
+			const techInterviewProcessing = new TechInterviewProcessing();
+			const techInterviewAjax = new TechInterviewAjax();
+			const techInterviewUI = new TechInterviewUI();
+			$(document).ready(() => techInterviewUI.initUI());
 			
 		</script>
 	</body>
